@@ -34,7 +34,7 @@ const RoomControls = memo(function RoomControls({
     }, [onLengthChange]);
 
     return (
-        <div className="z-50 absolute top-[50px] right-5 text-white font-sans text-sm bg-gray-900/90 bg-opacity-80 px-4 py-2 rounded-lg w-[270px]">
+        <div className="z-40 absolute top-[50px] right-5 text-white font-sans text-sm bg-gray-900/90 bg-opacity-80 px-4 py-2 rounded-lg w-[270px]">
             <h3 className="m-0 mb-3 text-white text-lg font-bold">Room Controls</h3>
 
             <div className="mb-2">

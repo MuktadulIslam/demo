@@ -1,14 +1,74 @@
 import { SelectableObjectRef } from '../canvas/types';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import * as THREE from 'three';
 
-export const uploadGlbToAzure = async (meshRef: SelectableObjectRef, fileName?: string) => {
+// Return type for single upload
+interface UploadResult {
+    success: boolean;
+    url: string;
+}
+
+// Return type for multiple uploads
+interface MultipleUploadResult {
+    success: boolean;
+    urls: string[];
+}
+
+const getResetTransformModel = (object: THREE.Object3D): THREE.Object3D => {
+    // Create a deep copy of the object
+    const copy = object.clone(true);
+
+    // Reset transform on the copy
+    copy.position.set(0, 0, 0);
+    copy.rotation.set(0, 0, 0);
+    copy.scale.set(1, 1, 1);
+
+    // Reset material effects (hover/selection) on the copy
+    copy.traverse((child) => {
+        if (child instanceof THREE.Mesh && child.material) {
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+
+            materials.forEach((mat) => {
+                // Clone the material to avoid affecting the original
+                const resetMaterial = mat.clone();
+
+                // Reset emissive properties to default values
+                if (resetMaterial.emissive) {
+                    resetMaterial.emissive.setHex(0x000000); // Black (no emission)
+                }
+                if (resetMaterial.emissiveIntensity !== undefined) {
+                    resetMaterial.emissiveIntensity = 0; // No intensity
+                }
+
+                // Apply the reset material to the child
+                if (Array.isArray(child.material)) {
+                    const materialIndex = child.material.indexOf(mat);
+                    if (materialIndex !== -1) {
+                        child.material[materialIndex] = resetMaterial;
+                    }
+                } else {
+                    child.material = resetMaterial;
+                }
+            });
+        }
+    });
+
+    // Update matrix on the copy
+    copy.updateMatrix();
+    copy.updateMatrixWorld(true);
+
+    return copy;
+};
+
+export const uploadGlbToAzure = async (meshRef: SelectableObjectRef, fileName?: string): Promise<UploadResult> => {
     try {
         const exporter = new GLTFExporter();
-        
+
         const exportPromise = new Promise<ArrayBuffer | object>((resolve, reject) => {
             if (meshRef.current) {
+                const objectCopy = getResetTransformModel(meshRef.current);
                 exporter.parse(
-                    meshRef.current,
+                    objectCopy,
                     (result) => resolve(result),
                     (error) => reject(error),
                     {
@@ -30,8 +90,8 @@ export const uploadGlbToAzure = async (meshRef: SelectableObjectRef, fileName?: 
         }
 
         // Use provided filename or generate one
-        const finalFileName = fileName ? 
-            (fileName.endsWith('.glb') ? fileName : `${fileName}.glb`) : 
+        const finalFileName = fileName ?
+            (fileName.endsWith('.glb') ? fileName : `${fileName}.glb`) :
             `object-${Date.now().toString()}.glb`;
 
         // Send ArrayBuffer directly with metadata in headers
@@ -50,43 +110,69 @@ export const uploadGlbToAzure = async (meshRef: SelectableObjectRef, fileName?: 
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return response;
+        // Parse the response to get the URL
+        const responseData = await response.json();
+        const modelUrl = responseData.url || responseData.modelUrl || '';
+
+        return {
+            success: true,
+            url: modelUrl
+        };
 
     } catch (error) {
         console.error('Upload failed:', error);
+        return {
+            success: false,
+            url: ''
+        };
     }
 }
 
-// Interface for upload items
-interface UploadItem {
-    ref: SelectableObjectRef;
-    fileName: string;
-}
-
-// New function to upload multiple files asynchronously
-export const uploadMultipleGlbToAzure = async (uploadItems: UploadItem[]): Promise<boolean> => {
+// Modified function to upload multiple files and return URLs
+export const uploadMultipleGlbToAzure = async (meshRefs: SelectableObjectRef[]): Promise<MultipleUploadResult> => {
     try {
         // Create an array of upload promises
-        const uploadPromises = uploadItems.map(async (item, index) => {
+        const uploadPromises = meshRefs.map(async (meshRef, index) => {
             try {
-                await uploadGlbToAzure(item.ref, item.fileName);
-                return true;
+                const result = await uploadGlbToAzure(meshRef);
+                return result;
             } catch (error) {
-                console.error(`Failed to upload file "${item.fileName}" (${index + 1}/${uploadItems.length}):`, error);
-                return false;
+                console.error(`Failed to upload file (${index + 1}/${meshRefs.length}):`, error);
+                return {
+                    success: false,
+                    url: ''
+                };
             }
         });
 
         // Wait for all uploads to complete
         const results = await Promise.allSettled(uploadPromises);
 
-        // Check if all uploads were successful
-        const allSuccessful = results.every(result => 
-            result.status === 'fulfilled' && result.value === true
-        );
-        return allSuccessful;
+        // Extract successful uploads and their URLs
+        const successfulUploads: string[] = [];
+        let allSuccessful = true;
+
+        results.forEach((result, index) => {
+            if (result.status === 'fulfilled' && result.value.success) {
+                successfulUploads.push(result.value.url);
+            } else {
+                allSuccessful = false;
+                console.error(`Upload ${index + 1} failed:`,
+                    result.status === 'rejected' ? result.reason : 'Unknown error'
+                );
+            }
+        });
+
+        return {
+            success: allSuccessful,
+            urls: allSuccessful ? successfulUploads : []
+        };
+
     } catch (error) {
         console.error('Batch upload process failed:', error);
-        return false;
+        return {
+            success: false,
+            urls: []
+        };
     }
 }

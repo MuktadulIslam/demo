@@ -5,14 +5,21 @@ import { SelectableObjectRef } from '../types';
 
 interface ScaledModelWrapperProps {
     children: React.ReactNode;
-    meshRef: SelectableObjectRef
+    meshRef: SelectableObjectRef;
+    originPosition?: [number, number, number];
+    scale?: [number, number, number];
+    rotation?: [number, number, number];
 }
 
 export default function ScaledModelWrapper({
     children,
-    meshRef
+    meshRef,     
+    originPosition,
+    scale,
+    rotation
 }: ScaledModelWrapperProps) {
-    const previousScale = useRef<THREE.Vector3>(null);
+    const scaleDownFactor = 0.6;
+    const previousScale = useRef<THREE.Vector3>(null);          // For preventing infinite loop
     const { dimensions: roomDimensions } = useRoomContext();
 
     const processScaling = useCallback(() => {
@@ -26,7 +33,9 @@ export default function ScaledModelWrapper({
             box.getSize(size);
 
             const maxScaleDownFactor = Math.max(size.x / roomDimensions.length, size.z / roomDimensions.width, size.y / roomDimensions.height);
-            return 1 / maxScaleDownFactor;
+
+            if (maxScaleDownFactor < 1) return 1;
+            else return scaleDownFactor / maxScaleDownFactor;
         } catch (error) {
             console.warn('❌ Error in scaling:', error);
             return 1;
@@ -36,11 +45,23 @@ export default function ScaledModelWrapper({
     // Reset when children change
     useEffect(() => {
         if (meshRef.current && meshRef.current.scale != previousScale.current) {
-            const scaleDownFactor = processScaling() * 0.4;   // Adjust the scale down factor as needed
-            meshRef.current.scale.set(scaleDownFactor, scaleDownFactor, scaleDownFactor);
-            previousScale.current = meshRef.current.scale;
+            if (scale) {
+                meshRef.current.scale.set(...scale);
+                previousScale.current = meshRef.current.scale;
+            } else {
+                const newScale = processScaling();
+                meshRef.current.scale.set(newScale, newScale, newScale);
+                previousScale.current = meshRef.current.scale;
+            }
+
+            if (originPosition) {
+                meshRef.current.position.set(...originPosition);
+            }
+            if (rotation) {
+                meshRef.current.rotation.set(...rotation);
+            }
         }
-    }, [meshRef, roomDimensions, processScaling]);
+    }, [meshRef, roomDimensions, processScaling, scale, originPosition, rotation]);
 
     return (
         <>

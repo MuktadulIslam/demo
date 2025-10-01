@@ -33,14 +33,14 @@ export const sidebarStaticObjectGroups: DraggableObjectGroup[] = [
         color: 'from-blue-500 to-cyan-500',
         objects: [
             {
-                id: 'car',
+                id: 'car_001',
                 componentFactory: (meshRef: SelectableObjectRef) => <Car meshRef={meshRef} />,
                 name: 'Car',
                 icon: '🚗',
                 description: 'Simple car object'
             },
             {
-                id: 'car-2',
+                id: 'car_002',
                 componentFactory: (meshRef: SelectableObjectRef) => <CarModel meshRef={meshRef} />,
                 name: 'GLB Car Model',
                 icon: '🏎️',
@@ -55,28 +55,28 @@ export const sidebarStaticObjectGroups: DraggableObjectGroup[] = [
         color: 'from-amber-500 to-orange-500',
         objects: [
             {
-                id: 'table',
+                id: 'table_003',
                 componentFactory: (meshRef: SelectableObjectRef) => <Table meshRef={meshRef} />,
                 name: 'Table',
                 icon: '🪑',
                 description: 'Basic table geometry'
             },
             {
-                id: 'table model',
+                id: 'table_004',
                 componentFactory: (meshRef: SelectableObjectRef) => <TableModel meshRef={meshRef} />,
                 name: 'GLB Table Model',
                 icon: '🗂️',
                 description: 'Detailed table model'
             },
             {
-                id: 'children table model',
+                id: 'table_005',
                 componentFactory: (meshRef: SelectableObjectRef) => <ChildrenTableModel meshRef={meshRef} />,
                 name: 'GLB Children Table',
                 icon: '🧸',
                 description: 'Child-sized table model'
             },
             {
-                id: 'chair',
+                id: 'chair_006',
                 componentFactory: (meshRef: SelectableObjectRef) => <Chair meshRef={meshRef} />,
                 name: 'Chair',
                 icon: '💺',
@@ -91,7 +91,7 @@ export const sidebarStaticObjectGroups: DraggableObjectGroup[] = [
         color: 'from-green-500 to-emerald-500',
         objects: [
             {
-                id: 'box',
+                id: 'box_007',
                 componentFactory: (meshRef: SelectableObjectRef) => <BoxObject meshRef={meshRef} />,
                 name: 'Box',
                 icon: '📦',
@@ -106,7 +106,7 @@ export const sidebarStaticObjectGroups: DraggableObjectGroup[] = [
         color: 'from-purple-500 to-pink-500',
         objects: [
             {
-                id: 'custom',
+                id: 'custom_008',
                 componentFactory: (meshRef: SelectableObjectRef) => <CustomObject meshRef={meshRef} />,
                 name: 'Custom Object',
                 icon: '⚡',
@@ -121,112 +121,112 @@ export const sidebarStaticObjectGroups: DraggableObjectGroup[] = [
         color: 'from-indigo-500 to-purple-500',
         objects: [
             {
-                id: 'desk-sign',
+                id: 'desk_sign_009',
                 componentFactory: (meshRef: SelectableObjectRef) => <DeskSign meshRef={meshRef} />,
                 name: 'Desk Sign',
                 icon: '🪧',
                 description: 'Desktop nameplate or information sign'
             },
             {
-                id: 'disability-button',
+                id: 'disability_button_010',
                 componentFactory: (meshRef: SelectableObjectRef) => <DisabilityButton meshRef={meshRef} />,
                 name: 'Accessibility Button',
                 icon: '♿',
                 description: 'Disability access button for doors'
             },
             {
-                id: 'fax-machine',
+                id: 'fax_machine_011',
                 componentFactory: (meshRef: SelectableObjectRef) => <FaxMachine meshRef={meshRef} />,
                 name: 'Fax Machine',
                 icon: '📠',
                 description: 'Office fax machine'
             },
             {
-                id: 'keyboard',
+                id: 'keyboard_012',
                 componentFactory: (meshRef: SelectableObjectRef) => <Keyboard meshRef={meshRef} />,
                 name: 'Keyboard',
                 icon: '⌨️',
                 description: 'Computer keyboard'
             },
             {
-                id: 'monitor',
+                id: 'monitor_013',
                 componentFactory: (meshRef: SelectableObjectRef) => <Monitor meshRef={meshRef} />,
                 name: 'Monitor',
                 icon: '🖥️',
                 description: 'Computer display monitor'
             },
             {
-                id: 'monstera',
+                id: 'monstera_014',
                 componentFactory: (meshRef: SelectableObjectRef) => <Monstera meshRef={meshRef} />,
                 name: 'Monstera Plant',
                 icon: '🌱',
                 description: 'Decorative monstera house plant'
             },
             {
-                id: 'mouse',
+                id: 'mouse_015',
                 componentFactory: (meshRef: SelectableObjectRef) => <Mouse meshRef={meshRef} />,
                 name: 'Computer Mouse',
                 icon: '🖱️',
                 description: 'Computer pointing device'
             },
             {
-                id: 'mud-mat',
+                id: 'mud_mat_016',
                 componentFactory: (meshRef: SelectableObjectRef) => <MudMat meshRef={meshRef} />,
                 name: 'Floor Mat',
                 icon: '🧽',
                 description: 'Entrance floor mat'
             },
             {
-                id: 'old-reception-desk',
+                id: 'old_reception_desk_017',
                 componentFactory: (meshRef: SelectableObjectRef) => <OldRecepDesk meshRef={meshRef} />,
                 name: 'Vintage Reception Desk',
                 icon: '🗃️',
                 description: 'Classic style reception desk'
             },
             {
-                id: 'pen',
+                id: 'pen_018',
                 componentFactory: (meshRef: SelectableObjectRef) => <Pen meshRef={meshRef} />,
                 name: 'Pen',
                 icon: '🖊️',
                 description: 'Writing pen'
             },
             {
-                id: 'printer',
+                id: 'printer_019',
                 componentFactory: (meshRef: SelectableObjectRef) => <Printer meshRef={meshRef} />,
                 name: 'Printer',
                 icon: '🖨️',
                 description: 'Office printer'
             },
             {
-                id: 'reception-desk',
+                id: 'reception_desk_020',
                 componentFactory: (meshRef: SelectableObjectRef) => <ReceptionDesk meshRef={meshRef} />,
                 name: 'Reception Desk',
                 icon: '🏪',
                 description: 'Modern reception desk'
             },
             {
-                id: 'succulent',
+                id: 'succulent_021',
                 componentFactory: (meshRef: SelectableObjectRef) => <Succulent meshRef={meshRef} />,
                 name: 'Succulent Plant',
                 icon: '🌵',
                 description: 'Small decorative succulent'
             },
             {
-                id: 'tissue-box',
+                id: 'tissue_box_022',
                 componentFactory: (meshRef: SelectableObjectRef) => <TissueBox meshRef={meshRef} />,
                 name: 'Tissue Box',
                 icon: '📄',
                 description: 'Box of tissues'
             },
             {
-                id: 'waiting-bench',
+                id: 'waiting_bench_023',
                 componentFactory: (meshRef: SelectableObjectRef) => <WaitingBench meshRef={meshRef} />,
                 name: 'Waiting Bench',
                 icon: '🪑',
                 description: 'Seating bench for waiting areas'
             },
             {
-                id: 'wheelchair',
+                id: 'wheelchair_024',
                 componentFactory: (meshRef: SelectableObjectRef) => <Wheelchair meshRef={meshRef} />,
                 name: 'Wheelchair',
                 icon: '♿',

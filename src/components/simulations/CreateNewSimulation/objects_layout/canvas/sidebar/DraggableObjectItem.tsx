@@ -10,13 +10,14 @@ interface DraggableObjectItemProps {
 }
 
 const DraggableObjectItem= memo(function DraggableObjectItem({ object, groupColor }: DraggableObjectItemProps) {
-    const { setCurrentObject, setCurrentObjectRef } = useMeshContext();
+    const { setCurrentObject, setCurrentObjectRef, setCurrentObjectOriginId } = useMeshContext();
     
     const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
         event.dataTransfer.setData('text/plain', object.id);
         const meshRef = React.createRef<SelectableObject>();
         setCurrentObject(object.componentFactory(meshRef));
         setCurrentObjectRef(meshRef);
+        setCurrentObjectOriginId(object.id); // Store the original sidebar item ID
     }
 
     return (

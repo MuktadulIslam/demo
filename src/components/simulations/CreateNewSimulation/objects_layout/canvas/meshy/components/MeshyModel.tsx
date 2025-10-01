@@ -45,7 +45,7 @@ const CachedGLTFModel = memo(function CachedGLTFModel({ meshyUrl, blobUrl }: { m
 
 interface MeshyModelProps {
     url: string;
-    meshRef: SelectableObjectRef;
+    meshRef?: SelectableObjectRef;
     setIsError?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -54,20 +54,19 @@ const MeshyModel = memo(function MeshyModel({ url, meshRef, setIsError }: MeshyM
     const { getCachedModel } = useModelCache();
     // Move ALL hooks to the top level - they must always be called
     const { data: blobUrl, isLoading } = useMeshyModelUrl(url);
-
     const cachedModel = useMemo(() => {
         return getCachedModel(url);
     }, [url, getCachedModel]);
-
     // Now handle the conditional logic AFTER all hooks are called
-    if (cachedModel) {
-        const clonedScene = cachedModel.scene.clone();
-        return <primitive object={clonedScene} scale={1} />;
-    }
-
-    if (isLoading) return <ModelLoadingFallback />;
-    if (!blobUrl) return <ModelLoadingFallback />;
-
+    const modelComponent = useMemo(() => {
+        if (cachedModel) {
+            const clonedScene = cachedModel.scene.clone();
+            return <primitive object={clonedScene} />;
+        }
+        if (!blobUrl) return null;
+        return <CachedGLTFModel meshyUrl={url} blobUrl={blobUrl} />;
+    }, [cachedModel, blobUrl, url]);
+    if (isLoading || !modelComponent) return <ModelLoadingFallback />;
     // Wrap the GLTF component in error boundary and suspense
     return (
         <ErrorBoundary
@@ -78,9 +77,13 @@ const MeshyModel = memo(function MeshyModel({ url, meshRef, setIsError }: MeshyM
             }}
         >
             <Suspense fallback={<ModelLoadingFallback />}>
-                <ScaledModelWrapper meshRef={meshRef}>
-                    <CachedGLTFModel meshyUrl={url} blobUrl={blobUrl} />
-                </ScaledModelWrapper>
+                {meshRef ? (
+                    <ScaledModelWrapper meshRef={meshRef}>
+                        {modelComponent}
+                    </ScaledModelWrapper>
+                ) : (
+                    modelComponent
+                )}
             </Suspense>
         </ErrorBoundary>
     );

@@ -3,14 +3,15 @@ import React, { memo, use, useCallback, useEffect, useRef, useState } from "reac
 import * as THREE from 'three'
 import { useMeshContext } from "../context/MeshContext"
 import { SelectableObjectRef } from "../types"
+import { useRoomContext } from "../context/RoomDimensionsContext"
 
 interface DraggableObjectProps {
   objectId: string,
   position: [number, number, number],
-  groundSize: { width: number, depth: number },
   setOrbitEnabled: (enabled: boolean) => void,
   children: React.ReactNode,
-  meshRef?: SelectableObjectRef
+  meshRef: SelectableObjectRef
+  dragLimits: [[number, number], [number, number], [number, number]]
 }
 
 // Store original material states
@@ -24,74 +25,55 @@ interface MaterialState {
 const DraggableObject = memo(function DraggableObject({
   objectId,
   position,
-  groundSize,
   setOrbitEnabled,
   children,
-  meshRef
+  meshRef,
+  dragLimits
 }: DraggableObjectProps) {
-
-  const { setObject, selectedObjectId } = useMeshContext();
-  const [objectPosition, setObjectPosition] = useState<[number, number, number]>([position[0], 0, position[2]]) // for now everything should be on ground
-  const [dragLimits, setDragLimits] = useState<[[number, number], [number, number], [number, number]]>([[0, groundSize.width], [0, 0], [0, groundSize.depth]])
-  const groupRef = useRef<THREE.Group>(null)
-  const actualMeshRef = meshRef || groupRef;
+  console.log('DraggableObject render', objectId);
+  const { setObject, selectedObjectId, updateObjectDragLimits, updateObjectPosition } = useMeshContext();
+  const { dimensions: groundSize } = useRoomContext();
   // Store original material states for this specific instance
   const originalMaterialsRef = useRef<Map<THREE.Material, MaterialState>>(new Map());
+  const initialPositionSetRef = useRef(true);
+  const prePosition = useRef(new THREE.Vector3());
+  const snapSize = 0.5;
 
   // Setting Object Limits
   useEffect(() => {
-    if (actualMeshRef.current) {
-      const box = new THREE.Box3().setFromObject(actualMeshRef.current)
-      const size = new THREE.Vector3()
-      box.getSize(size)
-      const minEdge = box.min.clone();
-      const maxEdge = box.max.clone();
+    // if (initialPositionSetRef.current) {
+    const initPosition = new THREE.Vector3()
 
-      const collisionPreventionThreshold = 0.05;
-      const minX = -groundSize.width / 2 - minEdge.x + collisionPreventionThreshold;
-      const maxX = groundSize.width / 2 - maxEdge.x - collisionPreventionThreshold;
-      const minZ = -groundSize.depth / 2 - minEdge.z + collisionPreventionThreshold;
-      const maxZ = groundSize.depth / 2 - maxEdge.z - collisionPreventionThreshold;
+    // Snap to grid on X and Z
+    initPosition.x = Math.floor(position[0] / snapSize) * snapSize;
+    initPosition.y = 0; // Keep Y fixed at floor level
+    initPosition.z = Math.floor(position[2] / snapSize) * snapSize;
+    matrixRef.current.setPosition(initPosition);
+    prePosition.current = initPosition;
+    initialPositionSetRef.current = false;
+    // }
+  }, [position])
 
-      setDragLimits([
-        [minX, maxX], // X limits
-        [0, 0], // Y fixed to place object on ground
-        [minZ, maxZ]  // Z limits
-      ]);
-
-      setObjectPosition((position) => {
-        // for x-axis
-        if (position[0] < -groundSize.width / 2) position[0] = -groundSize.width / 2;
-        else if (position[0] > groundSize.width / 2) position[0] = groundSize.width / 2;
-        // for z-asis
-        if (position[2] < -groundSize.depth / 2) position[2] = -groundSize.depth / 2;
-        else if (position[2] > groundSize.depth / 2) position[2] = groundSize.depth / 2;
-
-        if (actualMeshRef.current) {
-          // y-asis will only for main (actualMeshRef) 3D component
-          actualMeshRef.current.position.set(position[0], position[1], position[2])
-        }
-        if (actualMeshRef.current) {
-          actualMeshRef.current.position.y = -minEdge.y;
-        }
-        return position;
-      })
+  useEffect(() => {
+    if (meshRef.current) {
+      const box = new THREE.Box3().setFromObject(meshRef.current)
+      box.getSize(new THREE.Vector3())
+      updateObjectDragLimits(objectId, box);
+      meshRef.current.position.x = 0;
+      if (meshRef.current.position.y == 0) {  // means it's the initial placement
+        meshRef.current.position.y = position[1] - box.min.y
+      }
+      // meshRef.current.position.y = 2 + (box.max.y - box.min.y) / 2;
+      meshRef.current.position.z = 0;
     }
-  }, [groundSize.width, groundSize.depth, actualMeshRef])
-
-  const handleDoubleClick = useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    if (actualMeshRef.current) {
-      setObject(actualMeshRef.current.children[0], objectId);
-    }
-  }, [actualMeshRef, objectId, setObject]);
+  }, [groundSize.length, groundSize.width, meshRef, objectId, updateObjectDragLimits, position])
 
 
   // Apply hover effect
   const applyHoverEffect = useCallback((isHover: boolean, isSelected: boolean = false) => {
-    if (!actualMeshRef.current) return;
+    if (!meshRef.current) return;
 
-    actualMeshRef.current.traverse((child) => {
+    meshRef.current.traverse((child) => {
       if (child instanceof THREE.Mesh && child.material) {
         const materials = Array.isArray(child.material) ? child.material : [child.material];
 
@@ -113,12 +95,12 @@ const DraggableObject = memo(function DraggableObject({
         });
       }
     });
-  }, [actualMeshRef]);
+  }, [meshRef]);
 
   // Initialize and store original material states
   useEffect(() => {
-    if (actualMeshRef.current) {
-      actualMeshRef.current.traverse((child) => {
+    if (meshRef.current) {
+      meshRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh && child.material) {
           const materials = Array.isArray(child.material) ? child.material : [child.material];
 
@@ -141,7 +123,7 @@ const DraggableObject = memo(function DraggableObject({
         }
       });
     }
-  }, [children, actualMeshRef]);
+  }, [children, meshRef]);
 
   // Selection effect
   useEffect(() => {
@@ -161,15 +143,44 @@ const DraggableObject = memo(function DraggableObject({
     }
   }, [selectedObjectId, objectId, applyHoverEffect]);
 
+  const handleDoubleClick = useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+    setObject(meshRef, objectId, position);
+  }, [meshRef, objectId, setObject, position]);
+
+
+  const matrixRef = useRef(new THREE.Matrix4());
+  const handleDrag = (localMatrix: THREE.Matrix4) => {
+    const newPosition = new THREE.Vector3().setFromMatrixPosition(localMatrix);
+
+    // Snap to grid on X and Z
+    newPosition.x = Math.floor(newPosition.x / snapSize) * snapSize;
+    newPosition.z = Math.floor(newPosition.z / snapSize) * snapSize;
+    newPosition.y = 0; // Keep Y fixed at floor level
+
+    newPosition.x = Math.max(dragLimits[0][0], Math.min(dragLimits[0][1], newPosition.x));
+    newPosition.z = Math.max(dragLimits[2][0], Math.min(dragLimits[2][1], newPosition.z));
+
+    matrixRef.current.setPosition(newPosition);
+    if (prePosition.current.x != newPosition.x || prePosition.current.z != newPosition.z) {
+      prePosition.current = newPosition
+    }
+  };
+
+  const handelDragEnd = () => {
+    setOrbitEnabled(true);
+    updateObjectPosition(objectId, [prePosition.current.x, prePosition.current.y, prePosition.current.z]);
+  }
+
   return (
     <DragControls
       onDragStart={() => setOrbitEnabled(false)}
-      onDragEnd={() => setOrbitEnabled(true)}
-      dragLimits={dragLimits}
+      onDragEnd={handelDragEnd}
+      matrix={matrixRef.current}
+      onDrag={handleDrag}
     >
       <group
-        ref={actualMeshRef}
-        position={objectPosition}
+        // ref={meshRef}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onDoubleClick={handleDoubleClick}

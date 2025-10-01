@@ -6,31 +6,28 @@ import DraggableObject from "./DraggableObject"
 import React from "react"
 import HtmlLoader from "./SuspenseLoader"
 import { useMeshContext } from "../context/MeshContext"
+import { useRoomContext } from "../context/RoomDimensionsContext"
 
 
 interface PlayGroundProps {
     setOrbitEnabled: (enabled: boolean) => void;
-    roomLength: number;
-    roomWidth: number;
     children: React.ReactNode;
 }
 
 const PlayGround = memo(function PlayGround({
     setOrbitEnabled,
-    roomWidth,
-    roomLength,
     children
 }: PlayGroundProps) {
     const { camera, raycaster, gl } = useThree();
     const groundRef = useRef<THREE.Mesh>(null);
-    const { objects, addObject, clearObject, currentObject, currentObjectRef, setCurrentObject, setCurrentObjectRef } = useMeshContext();
+    const { objects, addObject, clearObject, currentObject, currentObjectRef, currentObjectOriginId, setCurrentObject, setCurrentObjectRef, setCurrentObjectOriginId } = useMeshContext();
+    const { dimensions: roomSize } = useRoomContext();
 
-    // Handle drop events
     useEffect(() => {
         const handleDrop = (e: DragEvent) => {
             e.preventDefault();
 
-            if (currentObject && currentObjectRef) {
+            if (currentObject && currentObjectRef && currentObjectOriginId) {
                 const canvas = gl.domElement;
                 const rect = canvas.getBoundingClientRect();
                 const mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -43,20 +40,23 @@ const PlayGround = memo(function PlayGround({
 
                     if (intersects.length > 0) {
                         const point = intersects[0].point;
+                        const uniqueId = `${currentObjectOriginId}_${Date.now().toString()}`;
 
                         const newObject: PlacedObject = {
-                            id: Date.now().toString(),
+                            id: uniqueId,
+                            originId: currentObjectOriginId,
                             component: currentObject,
-                            position: [point.x, 1, point.z],
-                            meshRef: currentObjectRef
+                            position: [point.x, 0, point.z],
+                            meshRef: currentObjectRef,
+                            dragLimits: [[0, 0], [0, 0], [0, 0]]
                         };
-
                         addObject(newObject);
                     }
                 }
 
                 setCurrentObject(null);
                 setCurrentObjectRef(null);
+                setCurrentObjectOriginId(null);
             }
         };
 
@@ -72,7 +72,7 @@ const PlayGround = memo(function PlayGround({
             document.removeEventListener('drop', handleDrop);
             document.removeEventListener('dragover', preventDefaults);
         };
-    }, [currentObject, setCurrentObject, currentObjectRef, setCurrentObjectRef, camera, raycaster, gl, addObject]);
+    }, [currentObject, setCurrentObject, currentObjectRef, setCurrentObjectRef,currentObjectOriginId, setCurrentObjectOriginId, camera, raycaster, gl, addObject]);
 
     // Handle floor click to deselect objects
     const handleFloorClick = useCallback((event: React.MouseEvent) => {
@@ -91,12 +91,9 @@ const PlayGround = memo(function PlayGround({
                     <DraggableObject
                         objectId={obj.id}
                         position={obj.position}
-                        groundSize={{
-                            width: roomLength,
-                            depth: roomWidth
-                        }}
                         setOrbitEnabled={setOrbitEnabled}
-                        meshRef={obj.meshRef} // Add this line
+                        meshRef={obj.meshRef}
+                        dragLimits={obj.dragLimits}
                     >
                         {React.cloneElement(obj.component as React.ReactElement, { key: obj.id })}
                     </DraggableObject>
@@ -111,7 +108,7 @@ const PlayGround = memo(function PlayGround({
                 position={[0, 0, 0]}
                 onClick={handleFloorClick}
             >
-                <planeGeometry args={[roomLength, roomWidth]} />
+                <planeGeometry args={[roomSize.length, roomSize.width]} />
                 <meshStandardMaterial color="lightgray" opacity={0.7} transparent />
             </mesh>
         </>

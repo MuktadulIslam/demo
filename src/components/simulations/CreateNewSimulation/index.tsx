@@ -78,7 +78,8 @@ function CreateNewSimulationContent(){
 
 export default function CreateNewSimulation() {
     return (
-        <RoomProvider initialDimensions={{ width: 20, length: 25, height: 5 }}>
+        // <RoomProvider initialDimensions={{ width: 35, length: 35, height: 6 }}>
+        <RoomProvider initialDimensions={{ width: 22, length: 14, height: 5 }}>
             <MeshProvider>
                 <SimulationFormProvider>
                     <CreateNewSimulationContent />

@@ -239,19 +239,21 @@ export function SimulationFormProvider({ children }: { children: ReactNode }) {
 
     const handleFormSubmit = async (): Promise<void> => {
         try {
-            setIsSubmitting(true);
+            // setIsSubmitting(true);
 
-            const dateNow = Date.now().toString();
-            const refs = objects.map((obj, index) => ({
-                fileName: `object${index}-${dateNow}.glb`,
-                ref: obj.meshRef
-            }));
+            // const dateNow = Date.now().toString();
+            // const refs = objects.map((obj, index) => ({
+            //     fileName: `object${index}-${dateNow}.glb`,
+            //     ref: obj.meshRef
+            // }));
             
-            const isSuccessful = await uploadMultipleGlbToAzure(refs);
-            if (!isSuccessful) {
-                alert('Error uploading files to Azure platform!');
-                throw new Error('File upload failed');
-            }
+            // const isSuccessful = await uploadMultipleGlbToAzure(refs);
+            // if (!isSuccessful) {
+            //     alert('Error uploading files to Azure platform!');
+            //     throw new Error('File upload failed');
+            // }
+
+            console.log(objects.map((obj)=> obj.position))
 
             // const { program_affiliation_details, ...dataToSubmit } = watch();
             // void program_affiliation_details;

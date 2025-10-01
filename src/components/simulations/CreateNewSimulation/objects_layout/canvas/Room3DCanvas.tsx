@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense, memo, } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, } from '@react-three/drei';
-import Room from '../rooms/room1/Room';
+import Room from '../rooms/room2/Room';
 import RoomControls from './controls/RoomControls'
 import Sidebar from './sidebar/Sidebar';
 import PlayGround from './components/PlayGround';
@@ -11,6 +11,8 @@ import HtmlLoader from './components/SuspenseLoader';
 import ObjectControls from './controls/ObjectControls';
 import { MeshProvider, useMeshContext } from './context/MeshContext';
 import { RoomProvider, useRoomContext } from './context/RoomDimensionsContext';
+import Sava3DObjects from './components/Sava3DObjects';
+import Load3DObjects from './components/Load3DObjects';
 
 function Room3DCanvasContent() {
     const [controlsVisible, setControlsVisible] = useState<boolean>(true);
@@ -65,8 +67,11 @@ function Room3DCanvasContent() {
     }, []);
 
 
+
     return (
         <div className="w-full h-full relative overflow-hidden bg-[#226764a8]">
+            <Load3DObjects />
+            <Sava3DObjects />
             <Sidebar
                 visible={sidebarVisible}
             />
@@ -83,9 +88,10 @@ function Room3DCanvasContent() {
             )}
 
             <Canvas
-                // camera={{ position: [8, 4, 8], fov: 60 }}
-                camera={{ fov: 60 }}
+                camera={{ position: [8, 15, 20], fov: 60 }}
+                // camera={{ fov: 60 }}
                 shadows
+                style={{ position: 'relative', zIndex: 1 }}
             >
                 {/* <axesHelper args={[5]} /> */}
                 <Suspense fallback={<HtmlLoader />}>
@@ -106,8 +112,6 @@ function Room3DCanvasContent() {
                     <PlayGround
                         key={`${roomDimensions.width}-${roomDimensions.length}`}
                         setOrbitEnabled={setOrbitEnabled}
-                        roomWidth={roomDimensions.width}
-                        roomLength={roomDimensions.length}
                     >
                         <Room width={roomDimensions.width} length={roomDimensions.length} />
                     </PlayGround>
@@ -129,9 +133,9 @@ function Room3DCanvasContent() {
 
 const Room3DCanvas = memo(function Room3DCanvas() {
     return (
-        // <RoomProvider initialDimensions={{ width: 20, length: 25, height: 5 }}>
+        // <RoomProvider initialDimensions={{ width: 22, length: 14, height: 5 }}>
         //     <MeshProvider>
-                <Room3DCanvasContent />
+        <Room3DCanvasContent />
         //     </MeshProvider>
         // </RoomProvider>
     );
