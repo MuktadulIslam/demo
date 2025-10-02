@@ -179,27 +179,31 @@ export function MeshProvider({ children }: MeshProviderProps) {
     setObjectControlsVisible(false);
   };
 
-
-  // In MeshProvider
-  const value: MeshContextType = {
-    currentObject,
+  const actions = useMemo(() => ({
     setCurrentObject,
-    currentObjectRef,
     setCurrentObjectRef,
-    currentObjectOriginId,
     setCurrentObjectOriginId,
-    objects,
     setObjects,
     addObject,
     removeObject,
     updateObjectPosition,
     updateObjectDragLimits,
+    setObject,
+    clearObject,
+  }), []);
+
+
+  // In MeshProvider
+  const value: MeshContextType = {
+    currentObject,
+    currentObjectRef,
+    currentObjectOriginId,
+    objects,
     selectedObjectRef,
     selectedObjectId,
     selectedObjectPosition,
-    setObject,
-    clearObject,
     isObjectControlsVisible,
+    ...actions
   };
 
   return (

@@ -89,14 +89,9 @@ const PlayGround = memo(function PlayGround({
             {objects.map(obj => (
                 <Suspense fallback={<HtmlLoader />} key={obj.id}>
                     <DraggableObject
-                        objectId={obj.id}
-                        position={obj.position}
+                        object={obj}
                         setOrbitEnabled={setOrbitEnabled}
-                        meshRef={obj.meshRef}
-                        dragLimits={obj.dragLimits}
-                    >
-                        {React.cloneElement(obj.component as React.ReactElement, { key: obj.id })}
-                    </DraggableObject>
+                    />
                 </Suspense>
             ))}
             {children}
