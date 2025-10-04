@@ -1,18 +1,25 @@
-import { ModelsLocalStorage } from "./type";
+import { ModelsLocalStorage, RoomDimensions } from "./type";
 
 const ModelLocalStorageKey = 'craftxr_saved3DObjects_007';
+const RoomDimensionsLocalStorageKey = 'craftxr_saved3DRoomDimensions_007';
 
-export const get3DModelFromLocalStorage = (): ModelsLocalStorage => {
+export const get3DModelFromLocalStorage = (): [ModelsLocalStorage, RoomDimensions | null] => {
     if (typeof window !== 'undefined' && window.localStorage) {
-        const data = localStorage.getItem(ModelLocalStorageKey);
-        return data ? JSON.parse(data) : [];
+        const objectsData = localStorage.getItem(ModelLocalStorageKey);
+        const roomData = localStorage.getItem(RoomDimensionsLocalStorageKey);
+
+        const objects = objectsData ? JSON.parse(objectsData) : [];
+        const roomDimensions = roomData ? JSON.parse(roomData) : null;
+
+        return [objects, roomDimensions];
     }
-    return [];
+    return [[], null];
 };
 
-export const save3DModelToLocalStorage = (models: ModelsLocalStorage): void => {
+export const save3DModelToLocalStorage = (models: ModelsLocalStorage, roomDimensions: RoomDimensions): void => {
     if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem(ModelLocalStorageKey, JSON.stringify(models));
+        localStorage.setItem(RoomDimensionsLocalStorageKey, JSON.stringify(roomDimensions));
     }
 };
 

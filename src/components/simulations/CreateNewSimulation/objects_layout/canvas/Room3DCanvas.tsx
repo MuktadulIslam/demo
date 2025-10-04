@@ -13,8 +13,19 @@ import { MeshProvider, useMeshContext } from './context/MeshContext';
 import { RoomProvider, useRoomContext } from './context/RoomDimensionsContext';
 import Sava3DObjects from './components/Sava3DObjects';
 import Load3DObjects from './components/Load3DObjects';
+import { ModelsLocalStorage, RoomDimensions } from '../utils/modelLocalStorage/type';
 
-function Room3DCanvasContent() {
+interface Room3DCanvasContentProps {
+    isEditable: boolean
+    models?: ModelsLocalStorage
+    roomDimensions?: RoomDimensions
+}
+
+function Room3DCanvasContent({
+    isEditable,
+    models,
+    roomDimensions: propsRoomDimensions
+}: Room3DCanvasContentProps) {
     const [controlsVisible, setControlsVisible] = useState<boolean>(true);
     const [sidebarVisible, setSidebarVisible] = useState<boolean>(true);
     const [orbitEnabled, setOrbitEnabled] = useState(true)
@@ -22,7 +33,8 @@ function Room3DCanvasContent() {
 
     // Use mesh context
     const { isObjectControlsVisible } = useMeshContext();
-    const { dimensions: roomDimensions, setLength: setRoomLength, setWidth: setRoomWidth } = useRoomContext();
+    const { dimensions, setLength: setRoomLength, setWidth: setRoomWidth } = useRoomContext();
+    const roomDimensions = propsRoomDimensions ?? dimensions;
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -66,26 +78,29 @@ function Room3DCanvasContent() {
         };
     }, []);
 
-
-
     return (
         <div className="w-full h-full relative overflow-hidden bg-[#226764a8]">
-            <Load3DObjects />
-            <Sava3DObjects />
-            <Sidebar
-                visible={sidebarVisible}
-            />
-            {controlsVisible &&
-                <RoomControls
-                    length={roomDimensions.length}
-                    width={roomDimensions.width}
-                    onWidthChange={setRoomWidth}
-                    onLengthChange={setRoomLength}
-                />
+            <Load3DObjects models={models} roomDimensions={roomDimensions}/>
+
+            {isEditable &&
+                <>
+                    <Sava3DObjects />
+                    <Sidebar
+                        visible={sidebarVisible}
+                    />
+                    {controlsVisible &&
+                        <RoomControls
+                            length={roomDimensions.length}
+                            width={roomDimensions.width}
+                            onWidthChange={setRoomWidth}
+                            onLengthChange={setRoomLength}
+                        />
+                    }
+                    {isObjectControlsVisible && (
+                        <ObjectControls />
+                    )}
+                </>
             }
-            {isObjectControlsVisible && (
-                <ObjectControls />
-            )}
 
             <Canvas
                 camera={{ position: [8, 15, 20], fov: 60 }}
@@ -112,6 +127,7 @@ function Room3DCanvasContent() {
                     <PlayGround
                         key={`${roomDimensions.width}-${roomDimensions.length}`}
                         setOrbitEnabled={setOrbitEnabled}
+                        isEditable={isEditable}
                     >
                         <Room width={roomDimensions.width} length={roomDimensions.length} />
                     </PlayGround>
@@ -131,11 +147,22 @@ function Room3DCanvasContent() {
     );
 };
 
-const Room3DCanvas = memo(function Room3DCanvas() {
+
+interface Room3DCanvasProps {
+    isEditable?: boolean,
+    models?: ModelsLocalStorage
+    roomDimensions?: RoomDimensions
+}
+
+const Room3DCanvas = memo(function Room3DCanvas({
+    isEditable = true,
+    models,
+    roomDimensions
+}: Room3DCanvasProps) {
     return (
         // <RoomProvider initialDimensions={{ width: 22, length: 14, height: 5 }}>
         //     <MeshProvider>
-        <Room3DCanvasContent />
+        <Room3DCanvasContent isEditable={isEditable} models={models} roomDimensions={roomDimensions}/>
         //     </MeshProvider>
         // </RoomProvider>
     );

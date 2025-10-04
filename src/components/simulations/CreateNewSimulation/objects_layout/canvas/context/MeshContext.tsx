@@ -68,17 +68,14 @@ export function MeshProvider({ children }: MeshProviderProps) {
   const removeObject = (objectId: string) => {
     setObjects(prev => {
       const index = prev.findIndex(obj => obj.id === objectId);
+      console.log(index)
       if (index === -1) return prev; // Object not found, return same reference
 
       const newArray = [...prev];
       newArray.splice(index, 1);
       return newArray;
     });
-
-    // If the deleted object is currently selected, clear selection
-    if (selectedObjectId === objectId) {
-      clearObject();
-    }
+    clearObject();
   };
 
   const updateObjectPosition = (objectId: string, newPosition: [number, number, number]) => {
@@ -179,6 +176,8 @@ export function MeshProvider({ children }: MeshProviderProps) {
     setObjectControlsVisible(false);
   };
 
+
+  // In MeshProvider
   const actions = useMemo(() => ({
     setCurrentObject,
     setCurrentObjectRef,
@@ -205,6 +204,7 @@ export function MeshProvider({ children }: MeshProviderProps) {
     isObjectControlsVisible,
     ...actions
   };
+
 
   return (
     <MeshContext.Provider value={value}>

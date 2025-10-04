@@ -7,7 +7,7 @@ import { useRoomContext } from "../context/RoomDimensionsContext"
 
 interface DraggableObjectProps {
   setOrbitEnabled: (enabled: boolean) => void,
-  object: PlacedObject,
+  object: PlacedObject
 }
 
 // Store original material states
@@ -20,6 +20,7 @@ interface MaterialState {
 
 const DraggableObject = memo(function DraggableObject({ setOrbitEnabled, object }: DraggableObjectProps) {
   const { id: objectId, position, meshRef, dragLimits } = object;
+
   console.log('DraggableObject render', objectId);
   const { setObject, selectedObjectId, updateObjectDragLimits, updateObjectPosition } = useMeshContext();
   const { dimensions: groundSize } = useRoomContext();

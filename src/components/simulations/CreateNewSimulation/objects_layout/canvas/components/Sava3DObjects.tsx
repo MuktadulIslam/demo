@@ -4,9 +4,11 @@ import { uploadMultipleGlbToAzure } from "../../utils/uploadGlbToAzure";
 import { SelectableObjectRef } from "../types";
 import { ModelsLocalStorage } from "../../utils/modelLocalStorage/type";
 import { save3DModelToLocalStorage } from "../../utils/modelLocalStorage/storageService";
+import { useRoomContext } from "../context/RoomDimensionsContext";
 
 export default function Save3DObjects() {
     const { objects, setObjects } = useMeshContext();
+    const { dimensions } = useRoomContext();
     const [saving, setSaving] = useState<boolean>(false);
 
     const saveToLocalStorage = useCallback(async (): Promise<void> => {
@@ -90,14 +92,14 @@ export default function Save3DObjects() {
                     ],
                 }
             });
-            save3DModelToLocalStorage(objectData);
+            save3DModelToLocalStorage(objectData, dimensions);
 
         } catch (error) {
             console.error("Error saving 3D objects:", error);
         } finally {
             setSaving(false);
         }
-    }, [objects, setObjects]);
+    }, [dimensions, objects, setObjects]);
 
     // Handle keyboard shortcut
     useEffect(() => {

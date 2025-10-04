@@ -16,7 +16,7 @@ export const exportToGLB = (
     if (meshRef.current) {
       // Set default values from options
       const {
-        filename = 'table.glb',
+        filename = 'model.glb',
         binary = true,
         includeCustomExtensions = false,
         truncateDrawRange = true

@@ -1,0 +1,461 @@
+{
+  "models": [
+    {
+      "id": "keyboard_012_1759487461433",
+      "originId": "keyboard_012",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487534529.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        2.5,
+        2.3,
+        -6
+      ],
+      "originPosition": [
+        0,
+        2.2994880770891903,
+        0
+      ],
+      "scale": [
+        2.66,
+        2.66,
+        2.66
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "desk_sign_009_1759487139237",
+      "originId": "desk_sign_009",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487215178.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -2.5,
+        2.3,
+        -7
+      ],
+      "originPosition": [
+        0,
+        2.3080611560596656,
+        0
+      ],
+      "scale": [
+        1.38,
+        1.38,
+        1.38
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "tissue_box_022_1759487576799",
+      "originId": "tissue_box_022",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487636489.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        2,
+        0,
+        -5
+      ],
+      "originPosition": [
+        0,
+        2.2996222211420534,
+        0
+      ],
+      "scale": [
+        2.18,
+        2.18,
+        2.18
+      ],
+      "rotation": [
+        0,
+        -1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "mud_mat_016_1759486469098",
+      "originId": "mud_mat_016",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785581.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        0,
+        0,
+        9.574059258937835
+      ],
+      "originPosition": [
+        0,
+        -0.01148124562576413,
+        0
+      ],
+      "scale": [
+        2.03,
+        2.03,
+        2.03
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "monitor_013_1759487351558",
+      "originId": "monitor_013",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487449475.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        3,
+        0,
+        -5.5
+      ],
+      "originPosition": [
+        0,
+        2.2985346303880214,
+        0
+      ],
+      "scale": [
+        2.03,
+        2.03,
+        2.03
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "monstera_014_1759486455001",
+      "originId": "monstera_014",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785584.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -5.5,
+        0,
+        10
+      ],
+      "originPosition": [
+        0,
+        -0.0010255515575408934,
+        0
+      ],
+      "scale": [
+        1.66,
+        1.66,
+        1.66
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "mouse_015_1759487660965",
+      "originId": "mouse_015",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487690962.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        2,
+        0,
+        -5.5
+      ],
+      "originPosition": [
+        0,
+        2.3,
+        0
+      ],
+      "scale": [
+        0.26,
+        0.26,
+        0.26
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "printer_019_1759487039987",
+      "originId": "printer_019",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487121199.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -4.5,
+        0,
+        -8
+      ],
+      "originPosition": [
+        0,
+        2.2999707154929636,
+        0
+      ],
+      "scale": [
+        1.75,
+        1.75,
+        1.75
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "waiting_bench_023_1759486521040",
+      "originId": "waiting_bench_023",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785707.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -4,
+        0,
+        5
+      ],
+      "originPosition": [
+        0,
+        1.2726098503890172e-7,
+        0
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
+      "rotation": [
+        0,
+        3.141592653589793,
+        0
+      ]
+    },
+    {
+      "id": "waiting_bench_023_1759486627239",
+      "originId": "waiting_bench_023",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785707.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -4,
+        0,
+        -1
+      ],
+      "originPosition": [
+        0,
+        1.2726098503890172e-7,
+        0
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
+      "rotation": [
+        0,
+        -3.141592653589793,
+        0
+      ]
+    },
+    {
+      "id": "waiting_bench_023_1759486665007",
+      "originId": "waiting_bench_023",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785707.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        4,
+        0,
+        2
+      ],
+      "originPosition": [
+        0,
+        1.2726098503890172e-7,
+        0
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
+      "rotation": [
+        0,
+        3.141592653589793,
+        0
+      ]
+    },
+    {
+      "id": "reception_desk_020_1759486982309",
+      "originId": "reception_desk_020",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487121141.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -1.4334055247306812,
+        0,
+        -6.5
+      ],
+      "originPosition": [
+        0,
+        6.896019897340012e-8,
+        0
+      ],
+      "scale": [
+        2.14,
+        2.14,
+        2.14
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ]
+    },
+    {
+      "id": "waiting_bench_023_1759486647270",
+      "originId": "waiting_bench_023",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785707.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        4,
+        0,
+        5
+      ],
+      "originPosition": [
+        0,
+        1.2726098503890172e-7,
+        0
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
+      "rotation": [
+        0,
+        -3.141592653589793,
+        0
+      ]
+    },
+    {
+      "id": "waiting_bench_023_1759486685733",
+      "originId": "waiting_bench_023",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785707.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        4,
+        0,
+        -1
+      ],
+      "originPosition": [
+        0,
+        1.2726098503890172e-7,
+        0
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
+      "rotation": [
+        0,
+        -3.141592653589793,
+        0
+      ]
+    },
+    {
+      "id": "waiting_bench_023_1759486576694",
+      "originId": "waiting_bench_023",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759486785707.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        -4,
+        0,
+        2
+      ],
+      "originPosition": [
+        0,
+        1.2726098503890172e-7,
+        0
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
+      "rotation": [
+        0,
+        -3.141592653589793,
+        0
+      ]
+    },
+    {
+      "id": "wheelchair_024_1759487801998",
+      "originId": "wheelchair_024",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487863417.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        5.70992217005589,
+        0,
+        -5.279445213182042
+      ],
+      "originPosition": [
+        0,
+        0.015592458955943585,
+        0
+      ],
+      "scale": [
+        1.72,
+        1.72,
+        1.72
+      ],
+      "rotation": [
+        0,
+        4.71238898038469,
+        0
+      ]
+    },
+    {
+      "id": "wheelchair_024_1759487821233",
+      "originId": "wheelchair_024",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/sample_scene/object-1759487863417.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "position": [
+        5.5,
+        0,
+        -4
+      ],
+      "originPosition": [
+        0,
+        0.015592458955943585,
+        0
+      ],
+      "scale": [
+        1.72,
+        1.72,
+        1.72
+      ],
+      "rotation": [
+        0,
+        4.71238898038469,
+        0
+      ]
+    },
+    {
+      "id": "succulent_021_1759512592168",
+      "modelUrl": "https://craftxraddressableasset.blob.core.windows.net/users-models/room_models/object-1759512615772.glb?sp=rc&st=2025-08-22T12:34:47Z&se=2035-08-22T20:49:47Z&sv=2024-11-04&sr=c&sig=X%2B1C3tdqcalLN9Cc0qcUn7AThf58bctbCjuJljCn5M8%3D",
+      "originId": "succulent_021",
+      "originPosition": [
+        0,
+        2.2993773221969604,
+        0
+      ],
+      "position": [
+        -2,
+        2.3,
+        -7
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        2.05,
+        2.05,
+        2.05
+      ]
+    }
+  ],
+  "roomDimensions": {
+    "height": 5,
+    "length": 16,
+    "width": 22
+  },
+  "exportedAt": "2025-10-03T15:30:49.646Z",
+  "version": "007"
+}

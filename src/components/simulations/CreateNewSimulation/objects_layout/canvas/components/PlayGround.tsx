@@ -11,11 +11,13 @@ import { useRoomContext } from "../context/RoomDimensionsContext"
 
 interface PlayGroundProps {
     setOrbitEnabled: (enabled: boolean) => void;
+    isEditable: boolean
     children: React.ReactNode;
 }
 
 const PlayGround = memo(function PlayGround({
     setOrbitEnabled,
+    isEditable,
     children
 }: PlayGroundProps) {
     const { camera, raycaster, gl } = useThree();
@@ -72,7 +74,7 @@ const PlayGround = memo(function PlayGround({
             document.removeEventListener('drop', handleDrop);
             document.removeEventListener('dragover', preventDefaults);
         };
-    }, [currentObject, setCurrentObject, currentObjectRef, setCurrentObjectRef,currentObjectOriginId, setCurrentObjectOriginId, camera, raycaster, gl, addObject]);
+    }, [currentObject, setCurrentObject, currentObjectRef, setCurrentObjectRef, currentObjectOriginId, setCurrentObjectOriginId, camera, raycaster, gl, addObject]);
 
     // Handle floor click to deselect objects
     const handleFloorClick = useCallback((event: React.MouseEvent) => {
@@ -88,10 +90,17 @@ const PlayGround = memo(function PlayGround({
             {/* Render dropped objects */}
             {objects.map(obj => (
                 <Suspense fallback={<HtmlLoader />} key={obj.id}>
-                    <DraggableObject
-                        object={obj}
-                        setOrbitEnabled={setOrbitEnabled}
-                    />
+                    {isEditable ?
+                        <DraggableObject
+                            object={obj}
+                            setOrbitEnabled={setOrbitEnabled}
+                        /> :
+                        <group
+                            position={[obj.position[0], 0, obj.position[2]]}
+                        >
+                            {React.cloneElement(obj.component as React.ReactElement, { key: obj.id })}
+                        </group>
+                    }
                 </Suspense>
             ))}
             {children}

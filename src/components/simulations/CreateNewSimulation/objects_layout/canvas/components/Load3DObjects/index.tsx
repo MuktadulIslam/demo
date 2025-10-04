@@ -2,15 +2,21 @@
 import { memo, useEffect, useRef, useState } from "react"
 import React from "react";
 import { get3DModelFromLocalStorage } from "../../../utils/modelLocalStorage/storageService";
-import { ModelsLocalStorage } from "../../../utils/modelLocalStorage/type";
+import { ModelsLocalStorage, RoomDimensions } from "../../../utils/modelLocalStorage/type";
 import ModelLoadingIndicator from "./ModelLoadingIndicator";
 import { LoadingState, PlacedObject, SelectableObject } from "../../types";
 import { useMeshContext } from "../../context/MeshContext";
 import Azure3DModel from "./Azure3DModel";
 import { corsDataFetch } from "../../../utils/corsDataFetch";
+import { useRoomContext } from "../../context/RoomDimensionsContext";
 
-const Load3DObjects = memo(function Load3DObjects() {
+interface Load3DObjectsProps {
+    models?: ModelsLocalStorage
+    roomDimensions?: RoomDimensions
+}
+const Load3DObjects = memo(function Load3DObjects({ models, roomDimensions }: Load3DObjectsProps) {
     const { addObject } = useMeshContext();
+    const { setDimensions: setRoomDimensions } = useRoomContext();
 
     const hasInitialized = useRef(false);
     const bytesLoadedRef = useRef<Record<string, number>>({});
@@ -31,25 +37,33 @@ const Load3DObjects = memo(function Load3DObjects() {
         hasInitialized.current = true;
 
         const loadStoredModels = async () => {
-            const models: ModelsLocalStorage = get3DModelFromLocalStorage();
+            const [localStoredModels, localStoredRoomDimensions]: [ModelsLocalStorage, RoomDimensions | null] = get3DModelFromLocalStorage();
+
+            const storedModels = models ?? localStoredModels;
+            const storedRoomDimensions = roomDimensions ?? localStoredRoomDimensions;
+
+            if (storedRoomDimensions != null) {
+                setRoomDimensions(storedRoomDimensions)
+            }
+
             bytesLoadedRef.current = {};
             bytesTotalRef.current = {};
             aggregateBytesRef.current = { loaded: 0, total: 0 };
             let estimatedTotal = 0;
 
             updateLoadingState({
-                isLoading: models.length > 0,
-                totalModels: models.length,
+                isLoading: storedModels.length > 0,
+                totalModels: storedModels.length,
                 loadedModels: 0,
                 failedModels: 0,
                 totalBytes: 0,
                 loadedBytes: 0,
             });
 
-            if (models.length === 0) {
+            if (storedModels.length === 0) {
                 return;
             }
-            const promises = models.map(async (model, index) => {
+            const promises = storedModels.map(async (model, index) => {
                 try {
                     const meshRef = React.createRef<SelectableObject>();
                     bytesLoadedRef.current[model.id] = 0;
@@ -85,7 +99,7 @@ const Load3DObjects = memo(function Load3DObjects() {
                         },
                     });
 
-                    if(totalBytes < 2000){      // if the model size is less than 2KB, it is likely an error page
+                    if (totalBytes < 2000) {      // if the model size is less than 2KB, it is likely an error page
                         throw new Error('Failed to load model');
                     }
 
@@ -102,7 +116,7 @@ const Load3DObjects = memo(function Load3DObjects() {
                         aggregateBytesRef.current.total += adjustment;
                         estimatedTotal += adjustment;
                     }
-                    
+
                     const object = <Azure3DModel
                         key={model.id}
                         meshRef={meshRef}
@@ -149,10 +163,10 @@ const Load3DObjects = memo(function Load3DObjects() {
                 totalBytes: Math.max(aggregateBytesRef.current.total, aggregateBytesRef.current.loaded, estimatedTotal),
             }));
         };
-        
+
         loadStoredModels();
-    }, [addObject]);
-    
+    }, [addObject, models, setRoomDimensions, roomDimensions]);
+
     return (<>
         <ModelLoadingIndicator
             totalModels={loadingState.totalModels}

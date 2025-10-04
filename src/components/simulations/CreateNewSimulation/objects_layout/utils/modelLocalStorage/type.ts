@@ -8,4 +8,10 @@ export interface ModelLocalStorage {
     rotation: [number, number, number];
 }
 
+export interface RoomDimensions {
+    length: number;
+    width: number;
+    height: number;
+}
+
 export type ModelsLocalStorage = ModelLocalStorage[];
